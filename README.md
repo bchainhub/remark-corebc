@@ -1,10 +1,10 @@
 # Remark CoreBC
 
-This Remark plugin, "remark-corebc," is designed to transform Core Blockchain notations into markdown links, enhancing the integration of blockchain-based identifiers within markdown content.
+This Remark plugin, "remark-corebc," transforms Core Blockchain notations into markdown links, enhancing documents with blockchain data integrations. It features ICAN validation, customizable links to blockchain explorers, and formatting options for various blockchain identifiers.
 
 ## Installation
 
-You can install the plugin using npm or yarn:
+Install the plugin using npm or yarn:
 
 ```bash
 npm install remark-corebc
@@ -18,7 +18,7 @@ yarn add remark-corebc
 
 ## Usage
 
-Integrate the plugin into your Remark processing pipeline to automatically convert Core Blockchain notations and optionally validate ICAN (International Core Asset Number) identifiers:
+To automatically convert Core Blockchain notations into clickable links and optionally validate ICAN identifiers:
 
 ```javascript
 const remark = require('remark');
@@ -32,23 +32,37 @@ remark()
   });
 ```
 
-The plugin searches for Core Blockchain notations in the format `[cb1234...@cb]` or `[!cb1234...@cb]` in your markdown content, converting them into clickable links and validating ICAN identifiers when enabled.
+The plugin recognizes notations like [cb1234...@cb] and [!cb1234...@cb], converting them to links and optionally validating ICAN identifiers.
 
 ## Options
 
-- `enableIcanCheck`: Enables ICAN validation for identifiers (default: `true`).
-- `enableSkippingIcanCheck`: Allows skipping ICAN validation with a leading "!" in the notation (default: `true`).
+Configure the plugin with the following options:
+
+- enableIcanCheck: Enable ICAN validation (default: true).
+- enableSkippingIcanCheck: Skip ICAN validation with "!" prefix (default: true).
+- linkNetworks: Link to specific blockchain networks (default: true).
+- explorerUrl: Mainnet explorer URL for constructing links (default: `https://blockindex.net/`).
+- explorerTestnetUrl: Testnet explorer URL for constructing links (default: `https://xab.blockindex.net/`).
+- urlPathAddress: URL path for address links, appended to explorerUrl or explorerTestnetUrl. Use `${1}` as a placeholder for the address (e.g., `address/${1}`).
+- urlPathBlockNo: URL path for block number links, appended to explorerUrl or explorerTestnetUrl. Use `${1}` as a placeholder for the block number (e.g., `block/${1}`).
+- urlPathBlockHash: URL path for block hash links, appended to explorerUrl or explorerTestnetUrl. Use `${1}` as a placeholder for the block hash (e.g., `block/${1}`).
+- checkAddress: Transform blockchain addresses (default: true).
+- checkBlockNumber: Transform block numbers (default: true).
+- checkBlockHash: Transform block hashes (default: true).
+- debug: Print transformation details to console (default: false).
 
 ## Features
 
-- **ICAN Validation:** Optional validation of ICAN identifiers.
-- **Flexible Configuration:** Customizable through options to meet various use cases.
-- **Seamless Integration:** Designed to fit effortlessly into existing Remark pipelines.
+- ICAN Validation: Validates ICAN identifiers for reliability.
+- Link Customization: Customizes links to mainnet and testnet explorers for direct blockchain data access.
+- Data Transformation: Formats blockchain addresses, numbers, and hashes into clickable links.
+- Configuration Flexibility: Tailors behavior with a variety of options.
+- Seamless Integration: Fits into Remark pipelines, enhancing documents with blockchain integrations.
 
 ## Contributing
 
-Contributions are welcome! Please submit pull requests or open issues to help improve the plugin.
+Contributions are welcome! Please submit pull requests or open issues to improve the plugin.
 
 ## License
 
-This project is licensed under the CORE License - see the [LICENSE](LICENSE) file for details.
+Licensed under the [CORE License](LICENSE).
