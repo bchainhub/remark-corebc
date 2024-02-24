@@ -18,5 +18,5 @@ declare module 'remark-corebc' {
 
   function remarkCorebc(options?: CorebcOptions): (ast: Node) => void;
 
-  export = remarkCorebc;
+  export default remarkCorebc;
 }
