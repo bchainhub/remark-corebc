@@ -1,6 +1,6 @@
 {
   "name": "remark-corebc",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A Remark plugin to transform Core Blockchain notations into markdown links.",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
@@ -12,6 +12,10 @@
     "start": "node --loader ts-node/esm src/index.ts",
     "verbose": "clear && npm run build && node --loader ts-node/esm ./node_modules/uvu/bin.js --verbose test"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bchainhub/remark-corebc"
+  },
   "files": [
     "src/",
     "dist/",
@@ -22,6 +26,7 @@
   "keywords": [
     "remark",
     "plugin",
+    "remark-plugin",
     "markdown",
     "links",
     "transform",
@@ -55,7 +60,6 @@
   "exports": {
     ".": {
       "import": "./dist/index.js",
-      "require": "./dist/index.js",
       "types": "./types/index.d.ts"
     }
   }

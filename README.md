@@ -20,16 +20,20 @@ yarn add remark-corebc
 
 To automatically convert Core Blockchain notations into clickable links and optionally validate ICAN identifiers:
 
-```javascript
-const remark = require('remark');
-const remarkCorebc = require('remark-corebc');
+```typescript
+import remark from 'remark';
+import remarkCorebc from 'remark-corebc';
 
-remark()
-  .use(remarkCorebc, { enableIcanCheck: true })
-  .process('Your markdown text here', (err, file) => {
-    if (err) throw err;
+(async () => {
+  try {
+    const file = await remark()
+      .use(remarkCorebc, { enableIcanCheck: true })
+      .process('Your markdown text here');
     console.log(String(file));
-  });
+  } catch (err) {
+    throw err;
+  }
+})();
 ```
 
 The plugin recognizes notations like [cb1234...@cb] and [!cb1234...@cb], converting them to links and optionally validating ICAN identifiers.
