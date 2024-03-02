@@ -1,19 +1,55 @@
-import { Node } from 'unist';
+import { type Node } from 'unist';
 import { visit } from 'unist-util-visit';
 import Ican from '@blockchainhub/ican';
 
 interface CorebcOptions {
+  /**
+   * Enable ICAN check for addresses
+   */
   enableIcanCheck?: boolean;
+  /**
+   * Enable skipping ICAN check with "!" sign
+   */
   enableSkippingIcanCheck?: boolean;
+  /**
+   * Enable linking networks
+   */
   linkNetworks?: boolean;
+  /**
+   * Mainnet explorer URL
+   */
   explorerUrl?: string;
+  /**
+   * Testnet explorer URL
+   */
   explorerTestnetUrl?: string;
+  /**
+   * URL path for addresses
+   */
   urlPathAddress?: string;
+  /**
+   * URL path for block numbers
+   */
   urlPathBlockNo?: string;
+  /**
+   * URL path for block hashes
+   */
   urlPathBlockHash?: string;
+  /**
+   * Enabled checking address
+   */
   checkAddress?: boolean;
+  /**
+   * Enabled checking block number
+   */
   checkBlockNumber?: boolean;
+  /**
+   * Enabled checking block hash
+   */
   checkBlockHash?: boolean;
+  /**
+   * Debug mode
+   */
   debug?: boolean;
 }
 
@@ -251,6 +287,11 @@ const transformMatchesIntoNodes = (matches: Match[], options: CorebcOptions): No
   });
 };
 
+/**
+ * A remark transformer to transform Core Blockchain values (Addresses, Block Numbers, Block Hashes) into links.
+ * @param options - Options for the CoreBC plugin.
+ * @returns A transformer for the AST.
+ */
 export default function remarkCorebc(options: CorebcOptions = {}): (ast: Node) => void {
   const finalOptions = {
     enableIcanCheck: true, // Enable ICAN check for addresses
