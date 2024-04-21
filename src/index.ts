@@ -70,8 +70,8 @@ interface TextNode extends Node {
 }
 
 interface DelNode extends Node {
-  type: 'delete';
-  children: Array<TextNode>;
+  type: 'text';
+  value: string;
 }
 
 interface DefinitionNode extends Node {
@@ -126,8 +126,8 @@ const makeReferenceLinkNode = (reference: string, text: string): ReferenceLinkNo
 });
 
 const makeStrikethroughNode = (text: string): DelNode => ({
-  type: 'delete',
-  children: [{ type: 'text', value: text }],
+  type: 'text',
+  value: `~~${text}~~`,
 });
 
 const validateIcan = (address: string): boolean => {
