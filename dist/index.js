@@ -26,8 +26,8 @@ const makeReferenceLinkNode = (reference, text) => ({
     ],
 });
 const makeStrikethroughNode = (text) => ({
-    type: 'delete',
-    children: [{ type: 'text', value: text }],
+    type: 'text',
+    value: `~~${text}~~`,
 });
 const validateIcan = (address) => {
     return Ican.isValid(address, true);
