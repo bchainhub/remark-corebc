@@ -69,11 +69,6 @@ interface TextNode extends Node {
   value: string;
 }
 
-interface DelNode extends Node {
-  type: 'text';
-  value: string;
-}
-
 interface DefinitionNode extends Node {
   type: 'definition';
   identifier: string;
@@ -123,11 +118,6 @@ const makeReferenceLinkNode = (reference: string, text: string): ReferenceLinkNo
       url: reference,
     },
   ],
-});
-
-const makeStrikethroughNode = (text: string): DelNode => ({
-  type: 'text',
-  value: `~~${text}~~`,
 });
 
 const validateIcan = (address: string): boolean => {
@@ -253,7 +243,7 @@ const transformMatchesIntoNodes = (matches: Match[], options: CorebcOptions): No
     // Perform ICAN validation for address types unless skipping is specified
     if (options.enableIcanCheck && match.type === 'address' && !willSkip && !validateIcan(match.originalText)) {
       // ICAN validation failed; return a strikethrough node
-      return makeStrikethroughNode(`${match.transformedText}@cb`);
+      return makeTextNode(`¬${match.transformedText}@cb`);
     }
 
     switch (match.type) {
