@@ -25,10 +25,6 @@ const makeReferenceLinkNode = (reference, text) => ({
         },
     ],
 });
-const makeStrikethroughNode = (text) => ({
-    type: 'text',
-    value: `~~${text}~~`,
-});
 const validateIcan = (address) => {
     return Ican.isValid(address, true);
 };
@@ -136,7 +132,7 @@ const transformMatchesIntoNodes = (matches, options) => {
         }
         let willSkip = options.enableSkippingIcanCheck && match.skipIcanCheck;
         if (options.enableIcanCheck && match.type === 'address' && !willSkip && !validateIcan(match.originalText)) {
-            return makeStrikethroughNode(`${match.transformedText}@cb`);
+            return makeTextNode(`¬${match.transformedText}@cb`);
         }
         switch (match.type) {
             case 'address':

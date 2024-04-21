@@ -40,6 +40,13 @@ CoreBlockchainHandlers('Transforms CB link w/ bad checksum and exclamation mark'
   assert.is(normalizeString(output), normalizeString(expected));
 });
 
+CoreBlockchainHandlers('Transforms CB link w/ bad checksum', async () => {
+  const input = '[cb7247879011ea207df5b35a24ca6f0859dcfb145999@cb]';
+  const output = await processMarkdown(input);
+  const expected = '¬CB72…5999@cb';
+  assert.is(normalizeString(output), normalizeString(expected));
+});
+
 CoreBlockchainHandlers('Transforms CB link w/ block number - short', async () => {
   const input = '[5999@cb]';
   const output = await processMarkdown(input);
