@@ -300,19 +300,18 @@ export default function remarkCorebc(options: CorebcOptions = {}): (ast: Node) =
   };
 
   const transformer = (ast: Node): void => {
-    visit(ast, 'text', (node, index, parent) => {
+    visit<Node, 'text'>(ast, 'text', (node: TextNode, index: number, parent: ParentNode | undefined) => {
       if (!isTextNode(node) || !parent || typeof index !== 'number') return;
       const parentNode: ParentNode = parent as ParentNode;
-      const textNode: TextNode = node as TextNode;
       let newNodes: Node[] = [];
       let lastIndex = 0;
 
-      const matches = extractMatches(textNode.value, finalOptions);
+      const matches = extractMatches(node.value, finalOptions);
 
       matches.forEach(match => {
         // Add the text before the match to the newNodes
         if (match.originalIndex > lastIndex) {
-          newNodes.push(makeTextNode(textNode.value.slice(lastIndex, match.originalIndex)));
+          newNodes.push(makeTextNode(node.value.slice(lastIndex, match.originalIndex)));
         }
         // Process the match
         let matchedNodes = transformMatchesIntoNodes([match], finalOptions);
@@ -327,8 +326,8 @@ export default function remarkCorebc(options: CorebcOptions = {}): (ast: Node) =
       });
 
       // Add any remaining text after the last match
-      if (lastIndex < textNode.value.length) {
-        newNodes.push(makeTextNode(textNode.value.slice(lastIndex)));
+      if (lastIndex < node.value.length) {
+        newNodes.push(makeTextNode(node.value.slice(lastIndex)));
       }
 
       // Replace the original node with the new nodes
