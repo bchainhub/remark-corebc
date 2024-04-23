@@ -188,13 +188,12 @@ export default function remarkCorebc(options = {}) {
             if (!isTextNode(node) || !parent || typeof index !== 'number')
                 return;
             const parentNode = parent;
-            const textNode = node;
             let newNodes = [];
             let lastIndex = 0;
-            const matches = extractMatches(textNode.value, finalOptions);
+            const matches = extractMatches(node.value, finalOptions);
             matches.forEach(match => {
                 if (match.originalIndex > lastIndex) {
-                    newNodes.push(makeTextNode(textNode.value.slice(lastIndex, match.originalIndex)));
+                    newNodes.push(makeTextNode(node.value.slice(lastIndex, match.originalIndex)));
                 }
                 let matchedNodes = transformMatchesIntoNodes([match], finalOptions);
                 newNodes.push(...matchedNodes);
@@ -204,8 +203,8 @@ export default function remarkCorebc(options = {}) {
                 }
                 lastIndex = match.originalIndex + match.length;
             });
-            if (lastIndex < textNode.value.length) {
-                newNodes.push(makeTextNode(textNode.value.slice(lastIndex)));
+            if (lastIndex < node.value.length) {
+                newNodes.push(makeTextNode(node.value.slice(lastIndex)));
             }
             parentNode.children.splice(index, 1, ...newNodes);
         });
