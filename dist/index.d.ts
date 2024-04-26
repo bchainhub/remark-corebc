@@ -1,4 +1,4 @@
-import { type Node } from 'unist';
+import { Root } from 'mdast';
 interface CorebcOptions {
     enableIcanCheck?: boolean;
     enableSkippingIcanCheck?: boolean;
@@ -13,5 +13,5 @@ interface CorebcOptions {
     checkBlockHash?: boolean;
     debug?: boolean;
 }
-export default function remarkCorebc(options?: CorebcOptions): (ast: Node) => void;
+export default function remarkCorebc(options?: CorebcOptions): (ast: Root) => void;
 export {};

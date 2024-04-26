@@ -1,6 +1,17 @@
 # Remark CoreBC
 
-This Remark plugin, "remark-corebc," transforms Core Blockchain notations into markdown links, enhancing documents with blockchain data integrations. It features ICAN validation, customizable links to blockchain explorers, and formatting options for various blockchain identifiers.
+This Remark plugin, "remark-corebc," transforms Core Blockchain notations into Markdown links (when positively checked) and negated text (when negatively checked), enhancing documents with blockchain data integrations. It features ICAN validation, customizable links to blockchain explorers, and formatting options for various blockchain identifiers.
+
+## About Blockchain
+
+Blockchain is a decentralized, distributed ledger technology that records transactions across a network of computers. It provides transparency, security, and immutability for data storage and transfer. Core Blockchain is a blockchain platform that offers a scalable, secure, and efficient infrastructure for decentralized applications and digital assets.
+
+The main aim is to support [ICAN-based](https://cip.coreblockchain.net/sk-SK/cip/cbc/cip-100) blockchains, such as:
+
+- [Core Blockchain](https://coreblockchain.net/)
+  - Network Mainnet: [BlockIndex](https://blockindex.net/)
+  - Network Testnet `Devín`: [BlockIndex](https://xab.blockindex.net/)
+  - Network Enterprise `Koliba`
 
 ## Installation
 
@@ -18,7 +29,7 @@ yarn add remark-corebc
 
 ## Usage
 
-To automatically convert Core Blockchain notations into clickable links and optionally validate ICAN identifiers:
+To automatically convert Core Blockchain notations into clickable links or text definition and optionally validate ICAN identifiers:
 
 ```typescript
 import remark from 'remark';
@@ -36,7 +47,7 @@ import remarkCorebc from 'remark-corebc';
 })();
 ```
 
-The plugin recognizes notations like [cb1234...@cb] and [!cb1234...@cb], converting them to links and optionally validating ICAN identifiers.
+The plugin recognizes notations such as [cb1234...@cb] and [!cb1234...@cb], converting them to links and optionally validating ICAN identifiers, displaying invalid items as text.
 
 ## Options
 

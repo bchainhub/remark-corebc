@@ -1,4 +1,5 @@
 import { type Node } from 'unist';
+import { Parent, Root, RootContent, Text, Link, LinkReference } from 'mdast';
 import { visit } from 'unist-util-visit';
 import Ican from '@blockchainhub/ican';
 
@@ -53,34 +54,6 @@ interface CorebcOptions {
   debug?: boolean;
 }
 
-interface ParentNode extends Node {
-  children: Node[];
-}
-
-interface LinkNode extends Node {
-  type: 'link';
-  url: string;
-  title: string | null;
-  children: Array<TextNode>;
-}
-
-interface TextNode extends Node {
-  type: 'text';
-  value: string;
-}
-
-interface DefinitionNode extends Node {
-  type: 'definition';
-  identifier: string;
-  label: string;
-  url: string;
-}
-
-interface ReferenceLinkNode extends Node {
-  type: 'paragraph';
-  children: Array<TextNode | DefinitionNode>;
-}
-
 interface Match {
   type: 'address' | 'blockNumber' | 'blockHash';
   network: string;
@@ -92,30 +65,27 @@ interface Match {
   length: number;
 }
 
-const makeLinkNode = (url: string, text: string, title?: string): LinkNode => ({
+const makeLinkNode = (url: string, text: string, title?: string): Link => ({
   type: 'link',
   url,
   title: title || null,
   children: [{ type: 'text', value: text }],
 });
 
-const makeTextNode = (text: string): TextNode => ({
+const makeTextNode = (text: string): Text => ({
   type: 'text',
   value: text,
 });
 
-const makeReferenceLinkNode = (reference: string, text: string): ReferenceLinkNode => ({
-  type: 'paragraph',
+const makeReferenceLinkNode = (reference: string, text: string): LinkReference => ({
+  type: 'linkReference',
+  identifier: reference,
+  label: text,
+  referenceType: 'full',
   children: [
     {
       type: 'text',
-      value: `[${text}]`,
-    },
-    {
-      type: 'definition',
-      identifier: reference,
-      label: text,
-      url: reference,
+      value: text,
     },
   ],
 });
@@ -151,7 +121,7 @@ const slugify = (text: string) => text.toString().toLowerCase()
   .replace(/^-+/, '')             // Trim - from start of text
   .replace(/-+$/, '');            // Trim - from end of text
 
-const isTextNode = (node: Node): node is TextNode => {
+const isTextNode = (node: Node): node is Text => {
   return node.type === 'text';
 }
 
@@ -202,7 +172,7 @@ const extractMatches = (text: string, options: CorebcOptions): Match[] => {
 };
 
 // Function to transform matches into nodes
-const transformMatchesIntoNodes = (matches: Match[], options: CorebcOptions): Node[] => {
+const transformMatchesIntoNodes = (matches: Match[], options: CorebcOptions): RootContent[] => {
   return matches.flatMap(match => {
     let network = match.network;
     let fullName, link;
@@ -282,7 +252,7 @@ const transformMatchesIntoNodes = (matches: Match[], options: CorebcOptions): No
  * @param options - Options for the CoreBC plugin.
  * @returns A transformer for the AST.
  */
-export default function remarkCorebc(options: CorebcOptions = {}): (ast: Node) => void {
+export default function remarkCorebc(options: CorebcOptions = {}): (ast: Root) => void {
   const finalOptions = {
     enableIcanCheck: true, // Enable ICAN check for addresses
     enableSkippingIcanCheck: true, // Enable skipping ICAN check with "!" sign
@@ -299,11 +269,11 @@ export default function remarkCorebc(options: CorebcOptions = {}): (ast: Node) =
     ...options,
   };
 
-  const transformer = (ast: Node): void => {
-    visit<Node, 'text'>(ast, 'text', (node: TextNode, index: number, parent: ParentNode | undefined) => {
+  const transformer = (tree: Root): void => {
+    visit(tree, 'text', (node: Text, index: number | undefined, parent: Node | undefined) => {
       if (!isTextNode(node) || !parent || typeof index !== 'number') return;
-      const parentNode: ParentNode = parent as ParentNode;
-      let newNodes: Node[] = [];
+      const parentNode: Parent = parent as Parent;
+      let newNodes: RootContent[] = [];
       let lastIndex = 0;
 
       const matches = extractMatches(node.value, finalOptions);

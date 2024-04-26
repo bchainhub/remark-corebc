@@ -11,17 +11,14 @@ const makeTextNode = (text) => ({
     value: text,
 });
 const makeReferenceLinkNode = (reference, text) => ({
-    type: 'paragraph',
+    type: 'linkReference',
+    identifier: reference,
+    label: text,
+    referenceType: 'full',
     children: [
         {
             type: 'text',
-            value: `[${text}]`,
-        },
-        {
-            type: 'definition',
-            identifier: reference,
-            label: text,
-            url: reference,
+            value: text,
         },
     ],
 });
@@ -183,8 +180,8 @@ export default function remarkCorebc(options = {}) {
         debug: false,
         ...options,
     };
-    const transformer = (ast) => {
-        visit(ast, 'text', (node, index, parent) => {
+    const transformer = (tree) => {
+        visit(tree, 'text', (node, index, parent) => {
             if (!isTextNode(node) || !parent || typeof index !== 'number')
                 return;
             const parentNode = parent;
