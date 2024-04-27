@@ -1,5 +1,4 @@
-import { type Node } from 'unist';
-import { Parent, Root, RootContent, Text, Link, LinkReference } from 'mdast';
+import { Link, LinkReference, Node, Parent, Root, RootContent, Text } from 'mdast';
 import { visit } from 'unist-util-visit';
 import Ican from '@blockchainhub/ican';
 
@@ -270,9 +269,8 @@ export default function remarkCorebc(options: CorebcOptions = {}): (ast: Root) =
   };
 
   const transformer = (tree: Root): void => {
-    visit(tree, 'text', (node: Text, index: number | undefined, parent: Node | undefined) => {
+    visit(tree, 'text', (node: Text, index: number | undefined, parent: Parent | undefined) => {
       if (!isTextNode(node) || !parent || typeof index !== 'number') return;
-      const parentNode: Parent = parent as Parent;
       let newNodes: RootContent[] = [];
       let lastIndex = 0;
 
@@ -301,7 +299,7 @@ export default function remarkCorebc(options: CorebcOptions = {}): (ast: Root) =
       }
 
       // Replace the original node with the new nodes
-      parentNode.children.splice(index, 1, ...newNodes);
+      parent.children.splice(index, 1, ...newNodes);
     });
   };
 

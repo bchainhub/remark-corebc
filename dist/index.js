@@ -184,7 +184,6 @@ export default function remarkCorebc(options = {}) {
         visit(tree, 'text', (node, index, parent) => {
             if (!isTextNode(node) || !parent || typeof index !== 'number')
                 return;
-            const parentNode = parent;
             let newNodes = [];
             let lastIndex = 0;
             const matches = extractMatches(node.value, finalOptions);
@@ -203,7 +202,7 @@ export default function remarkCorebc(options = {}) {
             if (lastIndex < node.value.length) {
                 newNodes.push(makeTextNode(node.value.slice(lastIndex)));
             }
-            parentNode.children.splice(index, 1, ...newNodes);
+            parent.children.splice(index, 1, ...newNodes);
         });
     };
     return transformer;

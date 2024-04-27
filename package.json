@@ -1,6 +1,6 @@
 {
   "name": "remark-corebc",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A Remark plugin to transform Core Blockchain notations into markdown links.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
