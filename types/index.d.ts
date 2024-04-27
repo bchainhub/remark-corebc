@@ -1,4 +1,4 @@
-import { Node } from 'unist';
+import { Root } from 'mdast';
 
 declare module 'remark-corebc' {
   interface CorebcOptions {
@@ -16,5 +16,5 @@ declare module 'remark-corebc' {
     debug?: boolean;
   }
 
-  export default function remarkCorebc(options?: CorebcOptions): (ast: Node) => void;
+  export default function remarkCorebc(options?: CorebcOptions): (ast: Root) => void;
 }
